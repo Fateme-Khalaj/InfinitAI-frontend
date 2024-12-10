@@ -7,14 +7,15 @@ import NewDownloads from "src/pages/NewDownloads";
 import { BackgroundDiv } from "src/styled-components/background";
 import Header from "src/components/header/Header";
 import Footer from "src/components/footer/Footer";
+import Landing from "src/pages/Landing/Landing";
 
 const AppRoutes = () => {
   return (
     <Router>
       <BackgroundDiv>
-        <Header/>
+        {/* <Header/> */}
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/popular-downloads" element={<PopularDownloads />} />
           <Route path="/new-downloads" element={<NewDownloads />} />

@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const BackgroundDiv = styled.div`
-  background-image: url("/designed_background.png");
-  background-color: black;
+  // background-image: url("/designed_background.png");
+  // background-color: black;
+  background-color: #0C0A17;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
