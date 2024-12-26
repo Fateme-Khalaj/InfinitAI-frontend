@@ -5,10 +5,11 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  // align-items: center;
-  margin-top: 250px;
-  width: 1200px;
-  height: 500px;
+  align-items: center; 
+  width: 70%;
+  padding-left: 15%; 
+  padding-right: 15%; 
+  height: 100vh; 
   overflow: hidden;
 `;
 
@@ -20,15 +21,7 @@ const Landing: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "250px",
-        width: "60%",
-        marginLeft: "360px",
-      }}
-    >
+    <Container>
       {[
         { backgroundColor: "#132029", text: "VOICE", opacity: 0.25 },
         { backgroundColor: "#15515E", text: "SUPPORT", opacity: 0.3 },
@@ -45,7 +38,7 @@ const Landing: React.FC = () => {
           onClick={() => handleCardClick(index)}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 
