@@ -21,12 +21,14 @@ const StyledCard = styled(motion.div)<{ color: string; shadow?: boolean }>`
   padding-left: ${(props) => (props.shadow ? "40px" : "20px")};
 `;
 
-
-const StyledTitle = styled(motion.p)<{ opacity?: number }>`
+const StyledTitle = styled(motion.p)<{
+  opacity?: number;
+  leftDistance: string;
+}>`
   margin: 0;
   position: absolute;
-  left: 35%;
-  top: 50%; /* Align to the vertical center of the card */
+  left: ${(props) => props.leftDistance};
+  top: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
   color: white;
   font-weight: 900;
@@ -34,15 +36,17 @@ const StyledTitle = styled(motion.p)<{ opacity?: number }>`
   text-align: center;
   opacity: ${(props) => props.opacity || 1};
   white-space: nowrap;
+  transition: left 0.6s ease-in-out;
 `;
 
-const Card: React.FC<CardProps> = ({
+const Card: React.FC<CardProps & { leftDistance: string }> = ({
   backgroundColor,
   hasLeftShadow,
   text,
   opacity,
   isActive,
   onClick,
+  leftDistance, // New prop
 }) => {
   return (
     <StyledCard
@@ -59,7 +63,9 @@ const Card: React.FC<CardProps> = ({
         ease: "easeInOut",
       }}
     >
-      <StyledTitle opacity={opacity}>{text}</StyledTitle>
+      <StyledTitle opacity={opacity} leftDistance={isActive ? "15%" : "45%"}>
+        {text}
+      </StyledTitle>
     </StyledCard>
   );
 };
