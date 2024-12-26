@@ -20,11 +20,11 @@ const Header: React.FC = () => {
     <HeaderContainer>
       <StyledLogoImg src={icon.Logo} alt="Logo" />
       <HeaderTitle onClick={() => handleNavigate("/")}>INFINIT AI</HeaderTitle>
-      <HeaderItemContainer>
+      {/* <HeaderItemContainer>
         <HeaderItems onClick={() => handleNavigate("/categories")}>Categories</HeaderItems>
         <HeaderItems onClick={() => handleNavigate("/popular-downloads")}>Popular Downloads</HeaderItems>
         <HeaderItems onClick={() => handleNavigate("/new-downloads")}>New Downloads</HeaderItems>
-      </HeaderItemContainer>
+      </HeaderItemContainer> */}
     </HeaderContainer>
   );
 };

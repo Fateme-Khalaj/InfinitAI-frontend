@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import PopularDownloads from "src/pages/PopularDownloads";
 // import NewDownloads from "src/pages/NewDownloads";
 import { BackgroundDiv } from "src/styled-components/background";
-// import Header from "src/components/header/Header";
+import Header from "src/components/header/Header";
 import Footer from "src/components/footer/Footer";
 import Landing from "src/pages/Landing/Landing";
 import styled from "styled-components";
@@ -18,7 +18,7 @@ const AppRoutes = () => {
   return (
     <Router>
       <BackgroundDiv>
-        {/* <Header/> */}
+        <Header/>
         <Content>
           <Routes>
             <Route path="/" element={<Landing />} />
