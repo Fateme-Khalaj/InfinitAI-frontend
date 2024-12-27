@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SupportCenterContainer = styled.div`
   width: 80%;
-  height: fit-content;
+  height: 700px;
   background-color: #1a3848;
   border-radius: 20px;
 `;
