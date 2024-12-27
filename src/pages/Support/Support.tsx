@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import { ItemContainer, ItemSelectContainer, SupportCenterContainer } from "./style";
-import { FAQ } from "./Components/FAQ";
-import { AskQuestion } from "./Components/AskQuestion";
-import { LiveChat } from "./Components/LiveChat";
-
+import React, { useEffect, useState } from "react";
+import {
+  ItemContainer,
+  ItemSelectContainer,
+  SupportCenterContainer,
+} from "./style";
+import FAQ from "./Components/FAQ";
+import AskQuestion from "./Components/AskQuestion";
+import LiveChat from "./Components/LiveChat";
 
 const Support: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, []);
 
   const handleItemClick = (index: number) => {
     setActiveIndex(index);
