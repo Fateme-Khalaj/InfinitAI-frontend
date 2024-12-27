@@ -9,6 +9,9 @@ import Header from "src/components/header/Header";
 import Footer from "src/components/footer/Footer";
 import Landing from "src/pages/Landing/Landing";
 import styled from "styled-components";
+import Support from "src/pages/Support/Support";
+import Chat from "src/pages/Chat/Chat";
+import Voice from "src/pages/Voice/Voice";
 
 const Content = styled.div`
   flex: 1;
@@ -22,6 +25,9 @@ const AppRoutes = () => {
         <Content>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/voice" element={<Voice />} />
             {/* <Route path="/categories" element={<Categories />} />
             <Route path="/popular-downloads" element={<PopularDownloads />} />
             <Route path="/new-downloads" element={<NewDownloads />} /> */}
