@@ -4,13 +4,14 @@ import styled from "styled-components";
 const StyledFooter = styled.div`
   display: flex;
   justify-content: center;
-  position: fixed;
+  color: #15515e;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
-  color: #15515E;
-  bottom: 20px;
+  width: 100%;
 `;
-
 
 const Footer: React.FC = () => {
   return <StyledFooter>© 2024 INFINIT AI. All rights reserved.</StyledFooter>;

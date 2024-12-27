@@ -4,7 +4,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100px;
-  background-color: black;
+  // background-color: black;
   align-items: center;
 `;
 
@@ -15,11 +15,11 @@ export const StyledLogoImg = styled.img`
   z-index: 20;
 `;
 
-export const HeaderTitle = styled.h1`
+export const HeaderTitle = styled.h2`
   cursor: pointer;
   color: #2aa2bb;
   margin: 0;
-  margin-inline-start: 10px;
+  margin-inline-start: 20px;
 `;
 
 export const HeaderItemContainer = styled.div`

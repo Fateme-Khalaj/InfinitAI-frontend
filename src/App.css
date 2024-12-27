@@ -10,7 +10,8 @@
 }
 
 html, body {
-  /* margin: 0; Removes default margin */
-  /* padding: 0; Removes default padding */
-  height: 100%; /* Ensures full height */
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensures full height of the page */
+  overflow: auto; /* Enables scrolling */
 }

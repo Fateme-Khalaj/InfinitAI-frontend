@@ -18,22 +18,24 @@ const StyledCard = styled(motion.div)<{ color: string; shadow?: boolean }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: ${(props) => (props.shadow ? "40px" : "20px")};
+  padding-left: 20px; 
+  transition: width 0.6s ease-in-out;
 `;
-
 
 const StyledTitle = styled(motion.p)<{ opacity?: number }>`
   margin: 0;
-  position: absolute;
-  left: 35%;
-  top: 50%; /* Align to the vertical center of the card */
-  transform: translate(-50%, -50%) rotate(-90deg);
   color: white;
   font-weight: 900;
   font-size: 70px;
   text-align: center;
   opacity: ${(props) => props.opacity || 1};
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  // transform-origin: left center;
+  margin-left: 70px;
   white-space: nowrap;
+  transition: margin-left 0.6s ease-in-out;
 `;
 
 const Card: React.FC<CardProps> = ({
