@@ -37,7 +37,6 @@ const Landing: React.FC = () => {
             hasLeftShadow={index > 0}
             isActive={activeCard === index}
             onClick={() => handleCardClick(index)}
-            leftDistance={activeCard === index ? "15%" : "45%"}
           />
         ))}
       </Container>
