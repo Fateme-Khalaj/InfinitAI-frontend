@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { ItemContainer, ItemSelectContainer, SupportCenterContainer } from "./style";
+import { FAQ } from "./Components/FAQ";
+import { AskQuestion } from "./Components/AskQuestion";
+import { LiveChat } from "./Components/LiveChat";
+
 
 const Support: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleItemClick = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const renderActiveComponent = () => {
+    switch (activeIndex) {
+      case 0:
+        return <FAQ />;
+      case 1:
+        return <AskQuestion />;
+      case 2:
+        return <LiveChat />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       style={{ display: "flex", justifyContent: "center", paddingTop: "10%" }}
     >
-      <div
-        style={{
-          width: "80%",
-          height: "600px",
-          backgroundColor: "#1a3848",
-          borderRadius: "20px",
-        }}
-      >
+      <SupportCenterContainer>
         <h1
           style={{
             color: "#CCDFE5",
-            // marginInlineStart: "40px",
             margin: "40px",
           }}
         >
@@ -25,15 +41,29 @@ const Support: React.FC = () => {
         <h3
           style={{
             color: "#CCDFE5",
-            // marginInlineStart: "40px",
             margin: "40px",
             fontWeight: "normal",
           }}
         >
           Find answers, ask questions, or chat with our support team
         </h3>
-        <div style={{ border: "solid 1px #7BC1D0", width: "300px", height: "45px", margin: "40px" }}></div>
-      </div>
+        <ItemSelectContainer>
+          {[
+            { text: "FAQ" },
+            { text: "Ask a Question" },
+            { text: "Live Chat" },
+          ].map((items, index) => (
+            <ItemContainer
+              key={index}
+              isactive={activeIndex === index}
+              onClick={() => handleItemClick(index)}
+            >
+              {items.text}
+            </ItemContainer>
+          ))}
+        </ItemSelectContainer>
+        {renderActiveComponent()}
+      </SupportCenterContainer>
     </div>
   );
 };
