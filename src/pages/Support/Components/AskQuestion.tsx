@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledTextArea = styled.textarea`
   width: 94%;
-  background-color: #ccdfd5;
+  background-color: #CCDFE5;
   border: solid 1px #ccdfd5;
   border-radius: 5px;
   padding-left: 10px;
@@ -60,12 +60,13 @@ const AskQuestion: React.FC = () => {
           <input
             type="text"
             value={name}
+            required={true}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your Name"
             style={{
               width: "94%",
               height: "45px",
-              backgroundColor: "#ccdfd5",
+              backgroundColor: "#CCDFE5",
               border: "solid 1px #CCDFE5",
               borderRadius: "5px",
               paddingLeft: "10px",
@@ -79,12 +80,13 @@ const AskQuestion: React.FC = () => {
           <input
             type="email"
             value={email}
+            required={true}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your Email"
             style={{
               width: "94%",
               height: "45px",
-              backgroundColor: "#ccdfd5",
+              backgroundColor: "#CCDFE5",
               border: "solid 1px #CCDFE5",
               borderRadius: "5px",
               paddingLeft: "10px",
@@ -97,6 +99,7 @@ const AskQuestion: React.FC = () => {
         <div style={{ margin: "20px 0" }}>
           <StyledTextArea
             value={question}
+            required={true}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Your Question"
             rows={4}

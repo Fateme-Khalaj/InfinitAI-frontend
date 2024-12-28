@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SupportCenterContainer = styled.div`
   width: 80%;
-  height: 700px;
+  height: 850px;
   background-color: #1a3848;
   border-radius: 20px;
 `;
@@ -29,5 +29,5 @@ export const ItemContainer = styled.div<{ isactive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.isactive ? "#7BC1D0" : "#ccdfd5")};
+  background-color: ${(props) => (props.isactive ? "#7BC1D0" : "#CCDFE5")};
 `;
