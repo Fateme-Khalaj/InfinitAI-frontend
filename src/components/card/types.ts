@@ -5,4 +5,7 @@ export interface CardProps {
     opacity: number;
     isActive: any;
     onClick: any;
+    cardText: string;
+    buttonText: string;
+    buttonClickHandler: any;
   };

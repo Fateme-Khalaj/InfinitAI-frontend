@@ -12,6 +12,7 @@ import styled from "styled-components";
 import Support from "src/pages/Support/Support";
 import Chat from "src/pages/Chat/Chat";
 import Voice from "src/pages/Voice/Voice";
+import Depth from "src/pages/Depth/Depth";
 
 const Content = styled.div`
   flex: 1;
@@ -28,6 +29,7 @@ const AppRoutes = () => {
             <Route path="/support" element={<Support />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/voice" element={<Voice />} />
+            <Route path="/depth" element={<Depth />} />
             {/* <Route path="/categories" element={<Categories />} />
             <Route path="/popular-downloads" element={<PopularDownloads />} />
             <Route path="/new-downloads" element={<NewDownloads />} /> */}
