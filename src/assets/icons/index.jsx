@@ -1,6 +1,11 @@
 import Logo from "./Logo.png";
+import arrowDown from "./arrowDown.svg";
+import arrowRight from "./arrowRight.svg";
 
-const icon = {
-    Logo
-}
-export default icon;
+const icons = {
+  Logo,
+  arrowDown,
+  arrowRight,
+};
+
+export default icons;
