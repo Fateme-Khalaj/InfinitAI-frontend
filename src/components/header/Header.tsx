@@ -16,6 +16,8 @@ const Header: React.FC = () => {
     navigate(path);
   }
 
+  const test = {};
+
   return (
     <HeaderContainer>
       <StyledLogoImg src={icon.Logo} alt="Logo" />
