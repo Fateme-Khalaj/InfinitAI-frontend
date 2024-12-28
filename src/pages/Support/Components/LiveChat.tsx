@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const LiveChat: React.FC = () => {
   const [messages, setMessages] = useState<
     { message: string; sender: string; timestamp: string }[]
   >([]);
   const [inputMessage, setInputMessage] = useState<string>("");
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch("https://support.infinitai.ir/get_messages");
+      const data = await response.json();
+      setMessages(data);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  };
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await fetch(
-          "https://support.infinitai.ir/get_messages"
-        );
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
     fetchMessages();
   }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
     if (inputMessage.trim() === "") return;
@@ -39,19 +50,17 @@ const LiveChat: React.FC = () => {
       const data = await response.json();
 
       if (data.success) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            message: inputMessage,
-            sender: "user",
-            timestamp: new Date().toISOString(),
-          },
-        ]);
-
         setInputMessage("");
+        fetchMessages();
       }
     } catch (error) {
       console.error("Error sending message:", error);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      sendMessage();
     }
   };
 
@@ -69,7 +78,12 @@ const LiveChat: React.FC = () => {
       }}
     >
       <div
-        style={{ maxHeight: "400px", overflowY: "auto", marginBottom: "20px" }}
+        ref={messagesContainerRef}
+        style={{
+          maxHeight: "400px",
+          overflowY: "auto",
+          marginBottom: "20px",
+        }}
       >
         {messages.map((msg, index) => (
           <div
@@ -118,6 +132,7 @@ const LiveChat: React.FC = () => {
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
           placeholder="Type your message..."
           style={{
             width: "80%",
