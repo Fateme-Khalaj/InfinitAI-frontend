@@ -18,7 +18,7 @@ const StyledCard = styled(motion.div)<{ color: string; shadow?: boolean }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 20px; 
+  padding-left: 20px;
   transition: width 0.6s ease-in-out;
 `;
 
@@ -32,10 +32,38 @@ const StyledTitle = styled(motion.p)<{ opacity?: number }>`
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
-  // transform-origin: left center;
   margin-left: 70px;
   white-space: nowrap;
   transition: margin-left 0.6s ease-in-out;
+`;
+
+const Description = styled(motion.div)`
+  position: absolute;
+  top: 45%;
+  left: 200px;
+  transform: translateY(-50%);
+  opacity: 0;
+  color: white;
+  width: 300px;
+`;
+
+const Button = styled(motion.button)`
+  position: absolute;
+  top: 70%;
+  left: 200px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: white;
+  color: #132029;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #7bc1d0;
+  }
 `;
 
 const Card: React.FC<CardProps> = ({
@@ -45,6 +73,9 @@ const Card: React.FC<CardProps> = ({
   opacity,
   isActive,
   onClick,
+  cardText,
+  buttonText,
+  buttonClickHandler,
 }) => {
   return (
     <StyledCard
@@ -62,6 +93,28 @@ const Card: React.FC<CardProps> = ({
       }}
     >
       <StyledTitle opacity={opacity}>{text}</StyledTitle>
+
+      <Description
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: isActive ? 1 : 0,
+        }}
+        transition={{ duration: 0.6 }}
+      >
+        <p style={{ width: "370px", wordWrap: "break-word", margin: 0 }}>
+          {cardText}
+        </p>
+      </Description>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: isActive ? 1 : 0,
+        }}
+        transition={{ duration: 0.6 }}
+      >
+        <Button onClick={buttonClickHandler}>{buttonText}</Button>
+      </motion.div>
     </StyledCard>
   );
 };

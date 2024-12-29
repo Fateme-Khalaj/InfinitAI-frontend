@@ -125,6 +125,7 @@ const LiveChat: React.FC = () => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          justifyContent: "center",
           margin: "20px",
         }}
       >
