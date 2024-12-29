@@ -39,7 +39,7 @@ const StyledTitle = styled(motion.p)<{ opacity?: number }>`
 
 const Description = styled(motion.div)`
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 200px;
   transform: translateY(-50%);
   opacity: 0;
@@ -49,7 +49,7 @@ const Description = styled(motion.div)`
 
 const Button = styled(motion.button)`
   position: absolute;
-  top: 75%;
+  top: 70%;
   left: 200px;
   margin-top: 20px;
   padding: 10px 20px;
@@ -101,7 +101,7 @@ const Card: React.FC<CardProps> = ({
         }}
         transition={{ duration: 0.6 }}
       >
-        <p style={{ width: "300px", wordWrap: "break-word", margin: 0 }}>
+        <p style={{ width: "370px", wordWrap: "break-word", margin: 0 }}>
           {cardText}
         </p>
       </Description>
