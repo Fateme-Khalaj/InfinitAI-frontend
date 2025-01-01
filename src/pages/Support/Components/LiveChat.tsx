@@ -24,9 +24,9 @@ const LiveChat: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  // useEffect(() => {
+  //   fetchMessages();
+  // }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -37,13 +37,17 @@ const LiveChat: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://support.infinitai.ir/send_message",
+        // "https://support.infinitai.ir/send_message",
+        // "http://192.168.1.222:1234/v1/chat/completions",
+        "https://api.infinitai.ir/space",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: inputMessage }),
+          body: JSON.stringify({
+          text: inputMessage,
+          }),
         }
       );
 
@@ -51,7 +55,8 @@ const LiveChat: React.FC = () => {
 
       if (data.success) {
         setInputMessage("");
-        fetchMessages();
+        // fetchMessages();
+        setMessages(data.json())
       }
     } catch (error) {
       console.error("Error sending message:", error);
