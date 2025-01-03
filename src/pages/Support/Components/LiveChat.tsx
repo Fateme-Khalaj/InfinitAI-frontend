@@ -1,21 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
+interface Message {
+  text: string;
+  sender: "user" | "app";
+}
+
 const LiveChat: React.FC = () => {
-  const [messages, setMessages] = useState<
-    { message: string; sender: string; timestamp: string }[]
-  >([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-
-  const fetchMessages = async () => {
-    try {
-      const response = await fetch("https://support.infinitai.ir/get_messages");
-      const data = await response.json();
-      setMessages(data);
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -25,36 +18,38 @@ const LiveChat: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchMessages();
-  }, []);
-
-  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
   const sendMessage = async () => {
     if (inputMessage.trim() === "") return;
 
+    const userMessage: Message = { text: inputMessage.trim(), sender: "user" };
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+    setInputMessage("");
+
     try {
-      const response = await fetch(
-        "https://support.infinitai.ir/send_message",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ message: inputMessage }),
-        }
-      );
+      const response = await fetch("https://api.infinitai.ir/comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: inputMessage.trim(), sender: "user" }),
+      });
 
       const data = await response.json();
-
-      if (data.success) {
-        setInputMessage("");
-        fetchMessages();
+      if (response.status === 200) {
+        const appMessage: Message = { text: data.text, sender: "app" };
+        setMessages((prevMessages) => [...prevMessages, appMessage]);
       }
     } catch (error) {
       console.error("Error sending message:", error);
+      const errorMessage: Message = {
+        text: "Sorry, something went wrong.",
+        sender: "app",
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
     }
   };
 
@@ -69,20 +64,20 @@ const LiveChat: React.FC = () => {
       style={{
         width: "90%",
         margin: "0 auto",
-        paddingLeft: "20px",
-        paddingRight: "20px",
-        paddingTop: "20px",
+        height: "500px",
+        display: "flex",
+        flexDirection: "column",
         backgroundColor: "#1a3848",
         border: "solid 1px #CCDFE5",
-        borderRadius: "1%",
+        borderRadius: "3px",
       }}
     >
       <div
         ref={messagesContainerRef}
         style={{
-          maxHeight: "400px",
+          flex: 1,
           overflowY: "auto",
-          marginBottom: "20px",
+          padding: "20px",
         }}
       >
         {messages.map((msg, index) => (
@@ -91,7 +86,6 @@ const LiveChat: React.FC = () => {
             style={{
               marginBottom: "15px",
               textAlign: msg.sender === "user" ? "right" : "left",
-              color: "#0C0A17",
             }}
           >
             <p
@@ -99,34 +93,24 @@ const LiveChat: React.FC = () => {
                 display: "inline-block",
                 padding: "10px",
                 borderRadius: "8px",
-                backgroundColor: msg.sender === "user" ? "#CCDFE5" : "#7BC1D0",
+                backgroundColor: msg.sender === "user" ? "#7BC1D0" : "#2AA2BB",
+                color: msg.sender === "user" ? "#0C0A17" : "#fff",
                 maxWidth: "70%",
                 wordBreak: "break-word",
               }}
             >
-              {msg.message}
+              {msg.text}
             </p>
-            <small
-              style={{
-                display: "block",
-                fontSize: "0.8rem",
-                color: "#999",
-                marginTop: "5px",
-              }}
-            >
-              {new Date(msg.timestamp).toLocaleString()}
-            </small>
           </div>
         ))}
       </div>
-      <hr style={{ width: "100%" }} />
+      <hr style={{ margin: 0, border: "1px solid #CCDFE5" }} />
       <div
         style={{
+          padding: "10px",
           display: "flex",
-          flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
-          margin: "20px",
+          backgroundColor: "#1a3848",
         }}
       >
         <input
@@ -136,21 +120,22 @@ const LiveChat: React.FC = () => {
           onKeyPress={handleKeyPress}
           placeholder="Type your message..."
           style={{
-            width: "80%",
+            flex: 1,
             height: "38px",
             border: "none",
             borderRadius: "5px",
             backgroundColor: "#CCDFE5",
             color: "#0C0A17",
             fontSize: "17px",
+            padding: "0 10px",
+            marginRight: "10px",
           }}
         />
         <button
           onClick={sendMessage}
           style={{
-            width: "15%",
             height: "38px",
-            margin: "0 10px",
+            padding: "0 20px",
             backgroundColor: "#2AA2BB",
             color: "#fff",
             border: "none",
