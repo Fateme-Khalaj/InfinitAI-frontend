@@ -8,21 +8,6 @@ const Container = styled.div`
   padding-top: 10%;
 `;
 
-const Button = styled.button<{ recording: boolean }>`
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: ${(props) => (props.recording ? "#f44336" : "#4CAF50")};
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: ${(props) => (props.recording ? "#d32f2f" : "#45a049")};
-  }
-`;
-
 const LanguageSelector = styled.div`
   margin-bottom: 20px;
   display: flex;
@@ -41,6 +26,21 @@ const LanguageSelector = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 200px;
+  }
+`;
+
+const Button = styled.button<{ recording: boolean }>`
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: ${(props) => (props.recording ? "#f44336" : "#4CAF50")};
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: ${(props) => (props.recording ? "#d32f2f" : "#45a049")};
   }
 `;
 
@@ -72,7 +72,6 @@ const Transcription = styled.div`
 const VoiceRecorder = () => {
   const [recording, setRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcription, setTranscription] = useState<string | null>(null);
 
@@ -85,18 +84,41 @@ const VoiceRecorder = () => {
 
   const handleRecording = async () => {
     if (!recording) {
-      console.log("start recording");
+      console.log("Start recording...");
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder.current = new MediaRecorder(stream);
-        mediaRecorder.current.ondataavailable = (event: any) => {
+        mediaRecorder.current.ondataavailable = (event) => {
           audioChunks.current.push(event.data);
         };
 
-        mediaRecorder.current.onstop = () => {
+        mediaRecorder.current.onstop = async () => {
           const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
-          setAudioBlob(audioBlob);
           setAudioURL(URL.createObjectURL(audioBlob));
+
+          const formData = new FormData();
+          formData.append("audio", audioBlob, "recording.wav");
+          formData.append("lang", selectedLanguage);
+
+          try {
+            const response = await fetch("https://voice.infinitai.ir/transcribe/", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Transcription failed: ${errorText}`);
+            }
+
+            const data = await response.json();
+            setTranscription(data.transcription || "No transcription received.");
+            setAudioURL(data.audio_url || audioURL);
+          } catch (error) {
+            console.error("Error transcribing audio:", error);
+            setTranscription("Error occurred during transcription.");
+          }
+
           audioChunks.current = [];
         };
 
@@ -106,44 +128,11 @@ const VoiceRecorder = () => {
         console.error("Error accessing microphone:", error);
       }
     } else {
-      console.log("stop recording");
+      console.log("Stop recording...");
       if (mediaRecorder.current) {
         mediaRecorder.current.stop();
       }
       setRecording(false);
-    }
-  };
-
-  const handleTranscription = async () => {
-    if (!audioBlob) {
-      console.warn("No audio recorded!");
-      return;
-    }
-  
-    const formData = new FormData();
-    formData.append("audio", audioBlob);
-    formData.append("lang", selectedLanguage);
-  
-    try {
-      const response = await fetch("https://voice.infinitai.ir/transcribe/", {
-        method: "POST",
-        body: formData,
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Transcription failed with status ${response.status}: ${errorText}`);
-      }
-  
-      const data = await response.json();
-      if (data && data.audio_url && data.transcription) {
-        setAudioURL(data.audio_url);
-        setTranscription(data.transcription);
-      } else {
-        console.error("Transcription response missing expected data", data);
-      }
-    } catch (error) {
-      console.error("Error transcribing audio:", error);
     }
   };
 
@@ -153,18 +142,13 @@ const VoiceRecorder = () => {
       <LanguageSelector>
         <label htmlFor="language">Select Language</label>
         <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
-          <option value="fa">Farsi (Persian)</option>
           <option value="en">English (US)</option>
+          <option value="fr">Farsi (Persian)</option>
         </select>
       </LanguageSelector>
       <Button recording={recording} onClick={handleRecording}>
         {recording ? "Stop Recording" : "Start Recording"}
       </Button>
-      {audioBlob && !recording && (
-        <Button recording={recording} onClick={handleTranscription}>
-          Transcribe Audio
-        </Button>
-      )}
       {audioURL && (
         <AudioPlayer controls src={audioURL}>
           Your browser does not support the audio element.
