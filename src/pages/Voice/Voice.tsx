@@ -94,7 +94,8 @@ const VoiceRecorder = () => {
 
         mediaRecorder.current.onstop = async () => {
           const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
-          setAudioURL(URL.createObjectURL(audioBlob));
+          const audioFileURL = URL.createObjectURL(audioBlob);
+          setAudioURL(audioFileURL);
 
           const formData = new FormData();
           formData.append("audio", audioBlob, "recording.wav");
@@ -113,7 +114,6 @@ const VoiceRecorder = () => {
 
             const data = await response.json();
             setTranscription(data.transcription || "No transcription received.");
-            setAudioURL(data.audio_url || audioURL);
           } catch (error) {
             console.error("Error transcribing audio:", error);
             setTranscription("Error occurred during transcription.");
@@ -143,7 +143,7 @@ const VoiceRecorder = () => {
         <label htmlFor="language">Select Language</label>
         <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
           <option value="en">English (US)</option>
-          <option value="fr">Farsi (Persian)</option>
+          <option value="fa">Farsi (Persian)</option>
         </select>
       </LanguageSelector>
       <Button recording={recording} onClick={handleRecording}>
