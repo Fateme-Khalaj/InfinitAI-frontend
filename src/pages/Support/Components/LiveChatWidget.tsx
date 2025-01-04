@@ -5,13 +5,19 @@ import icons from "src/assets/icons";
 const LiveChatWidget: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
+    setIsChatOpen((prevState) => !prevState);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (overlayRef.current && !overlayRef.current.contains(event.target as Node)) {
+    if (
+      overlayRef.current &&
+      !overlayRef.current.contains(event.target as Node) &&
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target as Node)
+    ) {
       setIsChatOpen(false);
     }
   };
@@ -48,6 +54,7 @@ const LiveChatWidget: React.FC = () => {
         <LiveChat />
       </div>
       <button
+        ref={buttonRef}
         onClick={toggleChat}
         style={{
           position: "fixed",
@@ -67,7 +74,7 @@ const LiveChatWidget: React.FC = () => {
           zIndex: 1001,
         }}
       >
-        <img src={icons.liveChatIcon} style={{ width: "30px" }}/>
+        <img src={icons.liveChatIcon} style={{ width: "30px" }} />
       </button>
     </>
   );
