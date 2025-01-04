@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "src/components/card/Card";
 import styled from "styled-components";
+import LiveChatWidget from "../Support/Components/LiveChatWidget";
 
 const Container = styled.div`
   display: flex;
@@ -105,6 +106,7 @@ const Landing: React.FC = () => {
         has the right to the protection of the law against such interference or
         attacks.
       </p>
+      <LiveChatWidget/>
     </div>
   );
 };
