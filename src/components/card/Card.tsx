@@ -101,7 +101,7 @@ const Card: React.FC<CardProps> = ({
         }}
         transition={{ duration: 0.6 }}
       >
-        <p style={{ width: "370px", wordWrap: "break-word", margin: 0 }}>
+        <p style={{ width: "80%", wordWrap: "break-word", margin: 0 }}>
           {cardText}
         </p>
       </Description>
