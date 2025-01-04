@@ -1,11 +1,22 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 10%;
+  width: 80%;
+  height: 600px;
+  background-color: #1a3848;
+  border-radius: 20px;
 `;
 
 const LanguageSelector = styled.div`
@@ -137,30 +148,32 @@ const VoiceRecorder = () => {
   };
 
   return (
-    <Container>
-      <h1 style={{ color: "#CCDFE5", margin: "40px" }}>Voice Transcription</h1>
-      <LanguageSelector>
-        <label htmlFor="language">Select Language</label>
-        <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
-          <option value="en">English (US)</option>
-          <option value="fa">Farsi (Persian)</option>
-        </select>
-      </LanguageSelector>
-      <Button recording={recording} onClick={handleRecording}>
-        {recording ? "Stop Recording" : "Start Recording"}
-      </Button>
-      {audioURL && (
-        <AudioPlayer controls src={audioURL}>
-          Your browser does not support the audio element.
-        </AudioPlayer>
-      )}
-      {transcription && (
-        <Transcription>
-          <h3>Transcription:</h3>
-          <p>{transcription}</p>
-        </Transcription>
-      )}
-    </Container>
+    <Wrapper>
+      <Container>
+        <h1 style={{ color: "#CCDFE5", margin: "40px" }}>Voice Transcription</h1>
+        <LanguageSelector>
+          <label htmlFor="language">Select Language</label>
+          <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
+            <option value="en">English (US)</option>
+            <option value="fa">Farsi (Persian)</option>
+          </select>
+        </LanguageSelector>
+        <Button recording={recording} onClick={handleRecording}>
+          {recording ? "Stop Recording" : "Start Recording"}
+        </Button>
+        {audioURL && (
+          <AudioPlayer controls src={audioURL}>
+            Your browser does not support the audio element.
+          </AudioPlayer>
+        )}
+        {transcription && (
+          <Transcription>
+            <h3>Transcription:</h3>
+            <p>{transcription}</p>
+          </Transcription>
+        )}
+      </Container>
+    </Wrapper>
   );
 };
 

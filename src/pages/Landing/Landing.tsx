@@ -50,7 +50,7 @@ const Landing: React.FC = () => {
             buttonText: "Go to Voice",
             buttonClickHandler: () => navigateToPage("/voice"),
             cardText:
-              "Artificial Intelligence has made significant strides in understanding and analyzing human speech. AI-powered voice detection technology is revolutionizing the way we interact with devices, providing solutions for various industries, from security to entertainment. These systems rely on sophisticated algorithms that analyze speech patterns, tone, pitch, and even emotion in a voice.",
+              "Artificial Intelligence has made significant strides in understanding and analyzing human speech. AI-powered voice detection technology is revolutionizing the way we interact with devices, providing solutions for various industries, from security to entertainment.",
           },
           {
             backgroundColor: "#15515E",
@@ -59,7 +59,7 @@ const Landing: React.FC = () => {
             buttonText: "Get Help",
             buttonClickHandler: () => navigateToPage("/support"),
             cardText:
-              "Customer support is at the core of any successful business, and in the digital age, it’s no longer limited to phone calls or face-to-face interactions. AI and automation have transformed traditional customer support models by enabling businesses to provide instant responses to customer queries, improve problem-solving efficiency, and offer 24/7 support. Chatbots powered by AI can assist with frequently asked questions, troubleshoot common issues, and even guide users through complex processes.",
+              "Customer support is at the core of any successful business, and in the digital age, it’s no longer limited to phone calls or face-to-face interactions. AI and automation have transformed traditional customer support models by enabling businesses to provide instant responses to customer queries, improve problem-solving efficiency, and offer 24/7 support.",
           },
           {
             backgroundColor: "#2AA2BB",
@@ -68,7 +68,7 @@ const Landing: React.FC = () => {
             buttonText: "Start Chat",
             buttonClickHandler: () => navigateToPage("/chat"),
             cardText:
-              "Chat technology has become the cornerstone of modern communication, providing users with a fast, interactive way to connect and collaborate. Whether in customer service, social media, or internal business operations, chat platforms facilitate instant communication. AI-enhanced chatbots, for example, are revolutionizing online interactions by offering users immediate responses without the need for human intervention.",
+              "Chat technology has become the cornerstone of modern communication, providing users with a fast, interactive way to connect and collaborate. Whether in customer service, social media, or internal business operations, chat platforms facilitate instant communication.",
           },
           {
             backgroundColor: "#7BC1D0",
