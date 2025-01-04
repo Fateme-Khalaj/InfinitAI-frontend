@@ -11,22 +11,24 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-top: 10%;
+  align-items: flex-start;
+  // padding-top: 8%;
+  padding-left: 10%;
   width: 80%;
-  height: 600px;
+  height: 550px;
   background-color: #1a3848;
   border-radius: 20px;
 `;
 
 const LanguageSelector = styled.div`
   margin-bottom: 20px;
+  margin-top: 7px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
 
   label {
-    margin-bottom: 8px;
+    margin-right: 10px;
     font-size: 16px;
     color: white;
   }
@@ -37,6 +39,24 @@ const LanguageSelector = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 200px;
+    background-color: #2a5069; /* Custom background color */
+    color: white; /* Custom text color */
+    cursor: pointer;
+
+    /* Custom border color on focus */
+    &:focus {
+      border-color: #4caf50;
+    }
+  }
+
+  select option {
+    background-color: #2a5069; /* Custom background for options */
+    color: white; /* Custom text color for options */
+    padding: 10px;
+  }
+
+  select option:hover {
+    background-color: #1a3848; /* Hover effect */
   }
 `;
 
@@ -49,6 +69,7 @@ const Button = styled.button<{ recording: boolean }>`
   border-radius: 4px;
   cursor: pointer;
   margin-bottom: 20px;
+  margin-top: 20px;
 
   &:hover {
     background-color: ${(props) => (props.recording ? "#d32f2f" : "#45a049")};
@@ -57,6 +78,7 @@ const Button = styled.button<{ recording: boolean }>`
 
 const AudioPlayer = styled.audio`
   margin-top: 20px;
+  margin-bottom: 20px;
   width: 100%;
   max-width: 400px;
 `;
@@ -82,14 +104,16 @@ const Transcription = styled.div`
 
 const VoiceRecorder = () => {
   const [recording, setRecording] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [selectedLanguage, setSelectedLanguage] = useState("fa");
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [transcription, setTranscription] = useState<string | null>(null);
 
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
 
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLanguageChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setSelectedLanguage(event.target.value);
   };
 
@@ -97,14 +121,18 @@ const VoiceRecorder = () => {
     if (!recording) {
       console.log("Start recording...");
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         mediaRecorder.current = new MediaRecorder(stream);
         mediaRecorder.current.ondataavailable = (event) => {
           audioChunks.current.push(event.data);
         };
 
         mediaRecorder.current.onstop = async () => {
-          const audioBlob = new Blob(audioChunks.current, { type: "audio/wav" });
+          const audioBlob = new Blob(audioChunks.current, {
+            type: "audio/wav",
+          });
           const audioFileURL = URL.createObjectURL(audioBlob);
           setAudioURL(audioFileURL);
 
@@ -113,10 +141,13 @@ const VoiceRecorder = () => {
           formData.append("lang", selectedLanguage);
 
           try {
-            const response = await fetch("https://voice.infinitai.ir/transcribe/", {
-              method: "POST",
-              body: formData,
-            });
+            const response = await fetch(
+              "https://voice.infinitai.ir/transcribe/",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
 
             if (!response.ok) {
               const errorText = await response.text();
@@ -124,7 +155,9 @@ const VoiceRecorder = () => {
             }
 
             const data = await response.json();
-            setTranscription(data.transcription || "No transcription received.");
+            setTranscription(
+              data.transcription || "No transcription received."
+            );
           } catch (error) {
             console.error("Error transcribing audio:", error);
             setTranscription("Error occurred during transcription.");
@@ -150,12 +183,18 @@ const VoiceRecorder = () => {
   return (
     <Wrapper>
       <Container>
-        <h1 style={{ color: "#CCDFE5", margin: "40px" }}>Voice Transcription</h1>
+        <h1 style={{ color: "#CCDFE5", margin: "50px 30px 30px 0px" }}>
+          Voice Transcription
+        </h1>
         <LanguageSelector>
-          <label htmlFor="language">Select Language</label>
-          <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
-            <option value="en">English (US)</option>
+          <label htmlFor="language">Select Language:</label>
+          <select
+            id="language"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+          >
             <option value="fa">Farsi (Persian)</option>
+            <option value="en">English (US)</option>
           </select>
         </LanguageSelector>
         <Button recording={recording} onClick={handleRecording}>
