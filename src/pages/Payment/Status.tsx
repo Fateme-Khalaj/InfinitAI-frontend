@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import styled from "styled-components"
 
 
@@ -111,45 +111,54 @@ interface PaymentResponse {
   }
 
 export default function PaymentCheckPage() {
-  const [authority, setAuthority] = useState<string | null>(null)
   const [status, setStatus] = useState<string | null>(null)
   const [paymentData, setPaymentData] = useState<PaymentResponse | null>(null);
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Skip first extra render in Strict Mode
+    }
     // Parse query parameters
-    const params = new URLSearchParams(window.location.search)
-    const auth = params.get('Authority')
-    const stat = params.get('Status')
-
-    setAuthority(auth)
-    setStatus(stat)
+    const isMounted = true; // Track mounted state
 
     // Fetch payment details using the parameters
     const fetchPaymentDetails = async () => {
       try {
+        const params = new URLSearchParams(window.location.search)
+        const auth = params.get('Authority')
+        const stat = params.get('Status')
+
         if (!auth || !stat) {
           throw new Error('Missing payment parameters')
         }
 
+        setStatus(stat)
         const response = await fetch(`https://api.infinitai.ir/payment/verify/?Authority=${auth}&Status=${stat}`)
-        
+
         if (!response.ok) {
           throw new Error('Failed to verify payment')
         }
 
         const data: PaymentResponse = await response.json();
-        setPaymentData(data);
+        if (isMounted) {
+          setPaymentData(data);
+          setLoading(false);
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Payment verification failed')
-      } finally {
-        setLoading(false)
+        if (isMounted) {
+          setError(err instanceof Error ? err.message : 'Payment verification failed');
+          setLoading(false);
+        }
       }
-    }
+    };
 
-    fetchPaymentDetails()
-  }, [])
+    fetchPaymentDetails();
+     // Cleanup function
+  }, []);
 
   if (loading) {
     return <StyledContainer>Loading payment details...</StyledContainer>
@@ -185,12 +194,12 @@ export default function PaymentCheckPage() {
 
             <DetailRow>
               <DetailLabel>Amount:</DetailLabel>
-              <DetailValue $highlight>${paymentData.token}</DetailValue>
+              <DetailValue>{paymentData.token}</DetailValue>
             </DetailRow>
 
             <DetailRow>
               <DetailLabel>Email:</DetailLabel>
-              <DetailValue $highlight>${paymentData.email}</DetailValue>
+              <DetailValue>{paymentData.email}</DetailValue>
             </DetailRow>
 
             {/* Rest of your payment details */}
@@ -199,12 +208,13 @@ export default function PaymentCheckPage() {
 
         {/* <StatusIndicator $status={paymentData?.status || 'failed'}>
           Payment {paymentData?.status || 'unknown'}
-        </StatusIndicator> */}
+        </StatusIndicator> 
 
         <ButtonGroup>
           <ActionButton>Back to Home</ActionButton>
-          {/* {status !== 'OK' && <ActionButton $secondary>Retry Payment</ActionButton>} */}
+            {status !== 'OK' && <ActionButton $secondary>Retry Payment</ActionButton>}
         </ButtonGroup>
+        */}
       </StyledCard>
     </StyledContainer>
   )
